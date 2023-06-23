@@ -1,38 +1,28 @@
+import { useState } from 'react';
 import {
+  Alert,
+  FlatList,
   Text,
   TextInput,
-  View,
   TouchableOpacity,
-  FlatList,
-  Alert,
+  View,
 } from 'react-native';
 
-import { styles } from './styles';
 import { Participant } from '../../components/Participant';
+import { styles } from './styles';
 
 export default function Home() {
-  const participants = [
-    'Caio',
-    'Ludmila',
-    'Rodrigo',
-    'Agatha',
-    'Ravi',
-    'Ana',
-    'Viva',
-    'Mariana',
-    'Uiuiui',
-    'Aiaii',
-    'Uma',
-    'Louca',
-    'Gemedeira',
-  ];
+  const [participants, setParticipants] = useState(['Caio']);
+  const [text, setText] = useState('');
 
   function handleParticipantAdd(name: string) {
-    if (participants.includes('Caio'))
+    if (participants.includes(name))
       return Alert.alert('Name duplicated', 'The name is duplicated');
 
     Alert.alert('User added', 'Participante adicionado!');
-    return participants.push(name);
+
+    setParticipants((prevState) => [...prevState, name]);
+    return setText('');
   }
 
   function handleParticipantRemove(name: string) {
@@ -64,11 +54,12 @@ export default function Home() {
           style={styles.input}
           placeholder="Nome do participante"
           placeholderTextColor="#6b6b6b"
+          onChangeText={(newText) => setText(newText)}
         />
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => handleParticipantAdd()}
+          onPress={() => handleParticipantAdd(text)}
         >
           <Text style={styles.buttonText}>+</Text>
         </TouchableOpacity>
