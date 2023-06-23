@@ -4,6 +4,7 @@ import {
   View,
   TouchableOpacity,
   FlatList,
+  Alert,
 } from 'react-native';
 
 import { styles } from './styles';
@@ -26,12 +27,30 @@ export default function Home() {
     'Gemedeira',
   ];
 
-  function handleParticipantAdd() {
-    console.log('Clicou no botão de adicionar');
+  function handleParticipantAdd(name: string) {
+    if (participants.includes('Caio'))
+      return Alert.alert('Name duplicated', 'The name is duplicated');
+
+    Alert.alert('User added', 'Participante adicionado!');
+    return participants.push(name);
   }
 
   function handleParticipantRemove(name: string) {
-    console.log(`Você quer remover o participante ${name}`);
+    Alert.alert(
+      'Remove participant',
+      `Você deseja remover o participante ${name}?`,
+      [
+        {
+          text: 'Sim',
+          onPress: () => Alert.alert('Removido!'),
+        },
+        {
+          text: 'Não',
+          style: 'cancel',
+          isPreferred: true,
+        },
+      ]
+    );
   }
 
   return (
@@ -47,7 +66,10 @@ export default function Home() {
           placeholderTextColor="#6b6b6b"
         />
 
-        <TouchableOpacity style={styles.button} onPress={handleParticipantAdd}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => handleParticipantAdd()}
+        >
           <Text style={styles.buttonText}>+</Text>
         </TouchableOpacity>
       </View>
@@ -59,7 +81,7 @@ export default function Home() {
           <Participant
             key={item}
             name={item}
-            onRemove={() => handleParticipantRemove('Caio')}
+            onRemove={() => handleParticipantRemove(item)}
           />
         )}
         showsVerticalScrollIndicator={false}
