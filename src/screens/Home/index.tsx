@@ -12,17 +12,18 @@ import { Participant } from '../../components/Participant';
 import { styles } from './styles';
 
 export default function Home() {
-  const [participants, setParticipants] = useState(['Caio']);
-  const [text, setText] = useState('');
+  const [participants, setParticipants] = useState<string[]>([]);
+  const [participantName, setParticipantName] = useState('');
 
-  function handleParticipantAdd(name: string) {
-    if (participants.includes(name))
+  function handleParticipantAdd() {
+    if (participants.includes(participantName))
       return Alert.alert('Name duplicated', 'The name is duplicated');
 
     Alert.alert('User added', 'Participante adicionado!');
 
-    setParticipants((prevState) => [...prevState, name]);
-    return setText('');
+    setParticipants((prevState) => [...prevState, participantName]);
+
+    setParticipantName('');
   }
 
   function handleParticipantRemove(name: string) {
@@ -52,14 +53,15 @@ export default function Home() {
       <View style={styles.form}>
         <TextInput
           style={styles.input}
-          placeholder="Nome do participante"
+          value={participantName}
           placeholderTextColor="#6b6b6b"
-          onChangeText={(newText) => setText(newText)}
+          onChangeText={setParticipantName}
+          placeholder="Nome do participante"
         />
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => handleParticipantAdd(text)}
+          onPress={() => handleParticipantAdd()}
         >
           <Text style={styles.buttonText}>+</Text>
         </TouchableOpacity>
